@@ -1,14 +1,125 @@
-<!doctype html> 
-<html lang="en" ng-app="myApp">
-    <head> 
-        <meta charset="UTF-8"> 
-        <meta name="viewport" content="width =device-width,intial-scale=10"> 
-        <title>First angular project</title> 
-        <script src="node_modules/angular/angular.js"></script> 
-        <script src="app.js"></script> 
-    </head> 
-    <body ng-controller="mycontroller"> 
-        <h1> student details</h1>
-        <h1>Hello world </h1>
-    </body> 
-</html> 
+
+<!DOCTYPE html>
+<html ng-app="libraryApp">
+<head>
+    <title>Library Management System</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        .container {
+            background-color: white;
+            width: 60%;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h1 {
+            color: darkblue;
+        }
+
+        .book {
+            background-color: #e6f2ff;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+
+        input {
+            padding: 10px;
+            margin: 10px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: darkblue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container" ng-controller="ParentController">
+
+    <h1>Library Management System</h1>
+
+    <h3>Parent Controller</h3>
+
+    <p>Library Name: {{libraryName}}</p>
+
+    <div ng-controller="ChildController">
+
+        <h3>Child Controller - Book Details</h3>
+
+        <!-- Two-way data binding -->
+        <input type="text"
+               ng-model="newBook"
+               placeholder="Enter book name">
+
+        <button ng-click="addBook()">Add Book</button>
+
+        <h3>Available Books</h3>
+
+        <div class="book" ng-repeat="book in books">
+            {{ $index + 1 }}. {{ book }}
+        </div>
+
+        <h3>Live Data Binding</h3>
+
+        <p>Entered Book Name: {{newBook}}</p>
+
+    </div>
+
+</div>
+
+<script>
+
+    // Creating AngularJS application
+    var app = angular.module("libraryApp", []);
+
+    // Parent Controller
+    app.controller("ParentController", function($scope) {
+
+        $scope.libraryName = "ABC Public Library";
+
+    });
+
+    // Child Controller
+    app.controller("ChildController", function($scope) {
+
+        $scope.books = [
+            "The Alchemist",
+            "Wings of Fire",
+            "Harry Potter",
+            "Rich Dad Poor Dad",
+            "The Jungle Book"
+        ];
+
+        $scope.newBook = "";
+
+        $scope.addBook = function() {
+
+            if ($scope.newBook.trim() !== "") {
+                $scope.books.push($scope.newBook);
+                $scope.newBook = "";
+            }
+
+        };
+
+    });
+
+</script>
+
+</body>
+</html>
