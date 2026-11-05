@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en" ng-app="studentApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Management</title>
+
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="app.js"></script>
+</head>
+
+<body ng-controller="StudentController">
+
+    <h1>Student Management</h1>
+
+    <form ng-submit="saveStudent()">
+        <input type="text" ng-model="student.name"
+               placeholder="Student Name" required>
+
+        <input type="text" ng-model="student.department"
+               placeholder="Department" required>
+
+        <button type="submit">
+            {{ student.id ? 'Update Student' : 'Add Student' }}
+        </button>
+
+        <button type="button" ng-click="cancelEdit()"
+                ng-if="student.id">
+            Cancel
+        </button>
+    </form>
+
+    <hr>
+
+    <h2>Student List</h2>
+
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Actions</th>
+        </tr>
+
+        <tr ng-repeat="s in students">
+            <td>{{ s.id }}</td>
+            <td>{{ s.name }}</td>
+            <td>{{ s.department }}</td>
+            <td>
+                <button ng-click="editStudent(s)">Edit</button>
+                <button ng-click="deleteStudent(s.id)">Delete</button>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
