@@ -1,125 +1,459 @@
-
 <!DOCTYPE html>
-<html ng-app="libraryApp">
+<html lang="en" ng-app="eventApp">
+
 <head>
-    <title>Library Management System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <title>College Event Registration System</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            text-align: center;
-        }
-
-        .container {
-            background-color: white;
-            width: 60%;
-            margin: 30px auto;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px gray;
-        }
-
-        h1 {
-            color: darkblue;
-        }
-
-        .book {
-            background-color: #e6f2ff;
-            padding: 10px;
-            margin: 10px;
-            border-radius: 5px;
-        }
-
-        input {
-            padding: 10px;
-            margin: 10px;
-        }
-
-        button {
-            padding: 10px 15px;
-            background-color: darkblue;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body ng-controller="eventController">
 
-<div class="container" ng-controller="ParentController">
+    <!-- HEADER -->
+    <header>
+        <h1>College Event Registration System</h1>
+        <p>Explore Events | Register | Participate</p>
+    </header>
 
-    <h1>Library Management System</h1>
+    <main>
 
-    <h3>Parent Controller</h3>
+        <!-- LOGIN SECTION -->
+        <section class="container" ng-if="!loggedIn">
 
-    <p>Library Name: {{libraryName}}</p>
+            <h2>Welcome</h2>
+            <p>Please select your login type.</p>
 
-    <div ng-controller="ChildController">
+            <button ng-click="loginType='student'">
+                Student Login
+            </button>
 
-        <h3>Child Controller - Book Details</h3>
+            <button ng-click="loginType='admin'">
+                Admin Login
+            </button>
 
-        <!-- Two-way data binding -->
-        <input type="text"
-               ng-model="newBook"
-               placeholder="Enter book name">
+            <p class="error">{{loginError}}</p>
 
-        <button ng-click="addBook()">Add Book</button>
+            <!-- STUDENT LOGIN FORM -->
+            <form ng-if="loginType==='student'"
+                  ng-submit="studentLogin()">
 
-        <h3>Available Books</h3>
+                <h3>Student Login</h3>
 
-        <div class="book" ng-repeat="book in books">
-            {{ $index + 1 }}. {{ book }}
+                <label>Student Name</label>
+                <input type="text"
+                       ng-model="student.name"
+                       placeholder="Enter your name"
+                       required>
+
+                <label>USN</label>
+                <input type="text"
+                       ng-model="student.usn"
+                       placeholder="Enter your USN"
+                       required>
+
+                <label>Department</label>
+                <input type="text"
+                       ng-model="student.department"
+                       placeholder="Enter your department"
+                       required>
+
+                <label>Email</label>
+                <input type="email"
+                       ng-model="student.email"
+                       placeholder="Enter your email"
+                       required>
+
+                <button type="submit">Login</button>
+
+            </form>
+
+
+            <!-- ADMIN LOGIN FORM -->
+            <form ng-if="loginType==='admin'"
+                  ng-submit="adminLogin()">
+
+                <h3>Admin Login</h3>
+
+                <label>Username</label>
+                <input type="text"
+                       ng-model="admin.username"
+                       placeholder="Enter username"
+                       required>
+
+                <label>Password</label>
+                <input type="password"
+                       ng-model="admin.password"
+                       placeholder="Enter password"
+                       required>
+
+                <button type="submit">Login</button>
+
+            </form>
+
+        </section>
+
+
+        <!-- DASHBOARD -->
+        <div ng-if="loggedIn">
+
+            <!-- USER PROFILE -->
+            <section class="container">
+
+                <h2>Welcome, {{currentUser.name}}</h2>
+
+                <p><strong>Role:</strong> {{currentUser.role}}</p>
+
+                <div ng-if="currentUser.role==='Student'">
+
+                    <h3>My Profile</h3>
+
+                    <p>Name: {{currentUser.name}}</p>
+                    <p>USN: {{currentUser.usn}}</p>
+                    <p>Department: {{currentUser.department}}</p>
+                    <p>Email: {{currentUser.email}}</p>
+
+                </div>
+
+                <button ng-click="logout()">Logout</button>
+
+            </section>
+
+
+            <!-- UPCOMING EVENTS -->
+            <section class="container">
+
+                <h2>Upcoming Events</h2>
+
+                <div class="event-card"
+                     ng-repeat="event in events">
+
+                    <h3>{{event.name}}</h3>
+
+                    <p>{{event.description}}</p>
+
+                    <p>
+                        <strong>Date:</strong>
+                        {{event.date}}
+                    </p>
+
+                    <p>
+                        <strong>Venue:</strong>
+                        {{event.venue}}
+                    </p>
+
+                    <button ng-if="currentUser.role==='Student'"
+                            ng-click="selectEvent(event)">
+
+                        Register for Event
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- STUDENT EVENT REGISTRATION -->
+            <section class="container"
+                     id="registration"
+                     ng-if="currentUser.role==='Student'">
+
+                <h2>Event Registration</h2>
+
+                <form ng-submit="registerStudent()">
+
+                    <label>Student Name</label>
+                    <input type="text"
+                           ng-model="registration.name"
+                           readonly>
+
+                    <label>USN</label>
+                    <input type="text"
+                           ng-model="registration.usn"
+                           readonly>
+
+                    <label>Department</label>
+                    <input type="text"
+                           ng-model="registration.department"
+                           readonly>
+
+                    <label>Email</label>
+                    <input type="email"
+                           ng-model="registration.email"
+                           readonly>
+
+                    <label>Select Event</label>
+
+                    <select ng-model="registration.event"
+                            ng-options="event.name as event.name for event in events"
+                            required>
+
+                        <option value="">Select an event</option>
+
+                    </select>
+
+                    <button type="submit">
+                        Submit Registration
+                    </button>
+
+                </form>
+
+                <p>{{registrationMessage}}</p>
+
+            </section>
+
+
+            <!-- MY REGISTRATIONS -->
+            <section class="container"
+                     ng-if="currentUser.role==='Student'">
+
+                <h2>My Registrations</h2>
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Event Name</th>
+                            <th>Registration Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr ng-repeat="reg in registrations"
+                            ng-if="reg.usn===currentUser.usn">
+
+                            <td>{{reg.event}}</td>
+                            <td>{{reg.date}}</td>
+                            <td>{{reg.status}}</td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </section>
+
+
+            <!-- STUDENT FEEDBACK -->
+            <section class="container"
+                     ng-if="currentUser.role==='Student'">
+
+                <h2>Submit Feedback</h2>
+
+                <form ng-submit="submitFeedback()">
+
+                    <label>Your Feedback</label>
+
+                    <textarea ng-model="feedback.message"
+                              placeholder="Write your feedback here..."
+                              required>
+                    </textarea>
+
+                    <button type="submit">
+                        Submit Feedback
+                    </button>
+
+                </form>
+
+                <p>{{feedbackMessage}}</p>
+
+            </section>
+
+
+            <!-- ADMIN DASHBOARD -->
+            <div ng-if="currentUser.role==='Admin'">
+
+                <section class="container">
+
+                    <h2>Admin Dashboard</h2>
+
+                    <div class="dashboard-card">
+
+                        <h3>Total Events</h3>
+                        <p>{{events.length}}</p>
+
+                    </div>
+
+                    <div class="dashboard-card">
+
+                        <h3>Total Registrations</h3>
+                        <p>{{registrations.length}}</p>
+
+                    </div>
+
+                    <div class="dashboard-card">
+
+                        <h3>Total Feedback</h3>
+                        <p>{{feedbacks.length}}</p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ADD NEW EVENT -->
+                <section class="container">
+
+                    <h2>Add New Event</h2>
+
+                    <form ng-submit="addEvent()">
+
+                        <label>Event Name</label>
+
+                        <input type="text"
+                               ng-model="newEvent.name"
+                               placeholder="Enter event name"
+                               required>
+
+                        <label>Event Date</label>
+
+                        <input type="date"
+                               ng-model="newEvent.date"
+                               required>
+
+                        <label>Venue</label>
+
+                        <input type="text"
+                               ng-model="newEvent.venue"
+                               placeholder="Enter venue"
+                               required>
+
+                        <label>Description</label>
+
+                        <textarea ng-model="newEvent.description"
+                                  placeholder="Enter event description"
+                                  required>
+                        </textarea>
+
+                        <button type="submit">
+                            Add Event
+                        </button>
+
+                    </form>
+
+                    <p>{{eventMessage}}</p>
+
+                </section>
+
+
+                <!-- MANAGE EVENTS -->
+                <section class="container">
+
+                    <h2>Manage Events</h2>
+
+                    <div class="event-card"
+                         ng-repeat="event in events">
+
+                        <h3>{{event.name}}</h3>
+
+                        <p>Date: {{event.date}}</p>
+
+                        <p>Venue: {{event.venue}}</p>
+
+                        <button ng-click="deleteEvent($index)">
+                            Delete Event
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- REGISTERED STUDENTS -->
+                <section class="container">
+
+                    <h2>Registered Students</h2>
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>USN</th>
+                                <th>Department</th>
+                                <th>Email</th>
+                                <th>Event</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr ng-repeat="reg in registrations">
+
+                                <td>{{reg.name}}</td>
+                                <td>{{reg.usn}}</td>
+                                <td>{{reg.department}}</td>
+                                <td>{{reg.email}}</td>
+                                <td>{{reg.event}}</td>
+                                <td>{{reg.date}}</td>
+                                <td>{{reg.status}}</td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </section>
+
+
+                <!-- STUDENT FEEDBACK -->
+                <section class="container">
+
+                    <h2>Student Feedback</h2>
+
+                    <div ng-repeat="item in feedbacks"
+                         class="event-card">
+
+                        <h3>{{item.name}}</h3>
+
+                        <p>USN: {{item.usn}}</p>
+
+                        <p>{{item.message}}</p>
+
+                        <p>Date: {{item.date}}</p>
+
+                    </div>
+
+                </section>
+
+            </div>
+
         </div>
 
-        <h3>Live Data Binding</h3>
+    </main>
 
-        <p>Entered Book Name: {{newBook}}</p>
 
-    </div>
+    <!-- FOOTER -->
+    <footer>
 
-</div>
+        <p>
+            College Event Registration System
+        </p>
 
-<script>
+        <p>Mini Project</p>
 
-    // Creating AngularJS application
-    var app = angular.module("libraryApp", []);
+    </footer>
 
-    // Parent Controller
-    app.controller("ParentController", function($scope) {
 
-        $scope.libraryName = "ABC Public Library";
+    <!-- ANGULARJS LIBRARY -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
-    });
 
-    // Child Controller
-    app.controller("ChildController", function($scope) {
+    <!-- SUPABASE LIBRARY -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
-        $scope.books = [
-            "The Alchemist",
-            "Wings of Fire",
-            "Harry Potter",
-            "Rich Dad Poor Dad",
-            "The Jungle Book"
-        ];
 
-        $scope.newBook = "";
-
-        $scope.addBook = function() {
-
-            if ($scope.newBook.trim() !== "") {
-                $scope.books.push($scope.newBook);
-                $scope.newBook = "";
-            }
-
-        };
-
-    });
-
-</script>
+    <!-- APPLICATION JAVASCRIPT -->
+    <script src="app.js"></script>
 
 </body>
-</html>
+</html>  
