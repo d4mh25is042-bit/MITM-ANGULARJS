@@ -1,0 +1,422 @@
+/* =====================================
+   GENERAL STYLING
+===================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+
+/* =====================================
+   LOGIN PAGE
+===================================== */
+
+.login-container {
+    width: 90%;
+    max-width: 450px;
+    margin: 70px auto;
+    padding: 35px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    text-align: center;
+}
+
+.login-container h1 {
+    color: #243b75;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.login-container p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.login-container h2 {
+    color: #243b75;
+    margin: 20px 0;
+}
+
+.login-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+
+/* =====================================
+   INPUT FIELDS
+===================================== */
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+    background-color: white;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #243b75;
+    box-shadow: 0 0 4px rgba(36, 59, 117, 0.3);
+}
+
+input[readonly] {
+    background-color: #eeeeee;
+    cursor: not-allowed;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+label {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+
+/* =====================================
+   BUTTONS
+===================================== */
+
+button {
+    background-color: #243b75;
+    color: white;
+    padding: 11px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #172957;
+    transform: translateY(-2px);
+}
+
+.login-buttons button {
+    flex: 1;
+}
+
+
+/* =====================================
+   HEADER
+===================================== */
+
+header {
+    background: linear-gradient(135deg, #243b75, #4169a8);
+    color: white;
+    padding: 25px 15px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+header p {
+    margin-bottom: 12px;
+    color: white;
+}
+
+header button {
+    background-color: #ffffff;
+    color: #243b75;
+    font-weight: bold;
+}
+
+header button:hover {
+    background-color: #e5eaf5;
+}
+
+
+/* =====================================
+   NAVIGATION BAR
+===================================== */
+
+nav {
+    background-color: #172957;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 12px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    background-color: #4169a8;
+}
+
+
+/* =====================================
+   SECTIONS
+===================================== */
+
+section {
+    width: 90%;
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+    scroll-margin-top: 20px;
+}
+
+section h2 {
+    color: #243b75;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e5eaf5;
+}
+
+
+/* =====================================
+   EVENT CARDS
+===================================== */
+
+.event-card {
+    background-color: #f8faff;
+    border: 1px solid #dce4f2;
+    border-left: 5px solid #4169a8;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.event-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.event-card h3 {
+    color: #243b75;
+    margin-bottom: 10px;
+}
+
+.event-card p {
+    margin: 8px 0;
+}
+
+.event-card button {
+    margin-top: 10px;
+}
+
+
+/* =====================================
+   STUDENT PROFILE
+===================================== */
+
+.profile-card {
+    background-color: #f0f5ff;
+    border-left: 5px solid #243b75;
+    padding: 25px;
+}
+
+.profile-card p {
+    font-size: 16px;
+    padding: 8px 0;
+    border-bottom: 1px solid #dce4f2;
+}
+
+.profile-card strong {
+    color: #243b75;
+}
+
+
+/* =====================================
+   REGISTRATION FORM
+===================================== */
+
+#registration .event-card {
+    max-width: 650px;
+}
+
+#registration form button {
+    width: 100%;
+    margin-top: 10px;
+}
+
+
+/* =====================================
+   FEEDBACK FORM
+===================================== */
+
+#feedback .event-card {
+    max-width: 650px;
+}
+
+#feedback form button {
+    width: 100%;
+}
+
+
+/* =====================================
+   ADMIN DASHBOARD
+===================================== */
+
+#adminhome .event-card {
+    background-color: #f0f5ff;
+}
+
+#adminhome .event-card p {
+    font-size: 18px;
+    padding: 8px;
+    border-bottom: 1px solid #dce4f2;
+}
+
+
+/* =====================================
+   TABLE STYLING
+===================================== */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-color: white;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #243b75;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f5fa;
+}
+
+tr:hover {
+    background-color: #e5eaf5;
+}
+
+
+/* =====================================
+   MESSAGES
+===================================== */
+
+.error {
+    color: #d62828;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+#registrationMessage,
+#feedbackMessage {
+    color: green;
+    font-weight: bold;
+}
+
+
+/* =====================================
+   FOOTER
+===================================== */
+
+footer {
+    background-color: #172957;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+footer p {
+    margin: 5px;
+    font-size: 14px;
+}
+
+
+/* =====================================
+   RESPONSIVE DESIGN
+===================================== */
+
+@media screen and (max-width: 768px) {
+
+    .login-container {
+        margin: 30px auto;
+        padding: 20px;
+    }
+
+    .login-buttons {
+        flex-direction: column;
+    }
+
+    header h1 {
+        font-size: 22px;
+    }
+
+    nav {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    nav a {
+        display: block;
+    }
+
+    section {
+        width: 95%;
+        padding: 18px;
+    }
+
+    .event-card {
+        padding: 15px;
+    }
+
+    button {
+        max-width: 100%;
+    }
+
+} 
